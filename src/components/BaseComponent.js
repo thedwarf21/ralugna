@@ -50,6 +50,7 @@ export class BaseComponent extends HTMLElement {
     }
 
     /**
+     * @protected
      * @param {BehaviorConfig[]} config
      */
     set behaviors(config) {
