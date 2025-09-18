@@ -57,4 +57,4 @@ class BehaviorIntegrator {
     }
 }
 
-export const Behaviors = new BehaviorIntegrator();
+export const Composer = new BehaviorIntegrator();

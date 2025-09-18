@@ -1,4 +1,4 @@
-import { Behaviors } from "../engine/behaviors/BehaviorIntegrator.js";
+import { Composer } from "../engine/behaviors/BehaviorIntegrator.js";
 /** import { BehaviorConfig } from "../engine/behaviors/BehaviorIntegrator.js"; */
 
 /**
@@ -63,7 +63,7 @@ export class BaseComponent extends HTMLElement {
                 console.warn(`The behavior named ${currentName} appear several times in your config object => ignored.`);
                 continue;
             }
-            if (!currentClass || !Behaviors.isBehavior(currentClass)) {
+            if (!currentClass || !Composer.isBehavior(currentClass)) {
                 console.warn(`The behavior named ${currentName} is not relied to a Behavior class => ignored.`);
                 continue;
             }
