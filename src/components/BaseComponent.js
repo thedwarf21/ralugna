@@ -43,7 +43,7 @@ export class BaseComponent extends HTMLElement {
     set slots(names) {
         this.#slots = [];
         for (const name of names) {
-            if (!this.getSlot(name)) {
+            if (!this.#getSlot(name)) {
                 this.#slots.push({ name: name });
             }
         }
@@ -56,18 +56,9 @@ export class BaseComponent extends HTMLElement {
     set behaviors(config) {
         const keptConfig = [];
         for (const item of config) {
-            const currentName = item.name;
-            const currentClass = item.class;
-            const sameNamedItems = config.filter(elt => elt.name === currentName);
-            if (sameNamedItems.length > 1) {
-                console.warn(`The behavior named ${currentName} appear several times in your config object => ignored.`);
-                continue;
+            if (this.#checkBehaviorConfig(item, config)) {
+                keptConfig.push(item);
             }
-            if (!currentClass || !Composer.isBehavior(currentClass)) {
-                console.warn(`The behavior named ${currentName} is not relied to a Behavior class => ignored.`);
-                continue;
-            }
-            keptConfig.push(item);
         }
         this.#behaviors = keptConfig;
     }
@@ -87,12 +78,39 @@ export class BaseComponent extends HTMLElement {
         this.#prepareBehaviors();
     }
 
+    destroy() {
+        for (const behaviorConfig of this.#behaviors) {
+            const behavior = this[behaviorConfig.name];
+            behavior.destroy();
+        }
+    }
+
+    /**
+     * @param {BehaviorConfig} config 
+     * @param {BehaviorConfig[]} configsList
+     * @returns {boolean}
+     */
+    #checkBehaviorConfig(config, configsList) {
+        const currentName = config.name;
+        const currentClass = config.class;
+        const sameNamedItems = configsList.filter(elt => elt.name === currentName);
+        if (sameNamedItems.length > 1) {
+            console.warn(`The behavior named ${currentName} appear several times in your config object => ignored.`);
+            return false;
+        }
+        if (!currentClass || !Composer.isBehavior(currentClass)) {
+            console.warn(`The behavior named ${currentName} is not relied to a Behavior class => ignored.`);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @private
      * @param {string} name
      * @returns {SlotConfig | undefined}
      */
-    getSlot(name) {
+    #getSlot(name) {
         const filteredSlots = this.#slots.filter(elt => elt.name === name);
         return filteredSlots.length === 0 ? undefined : filteredSlots[0];
     }
@@ -117,18 +135,6 @@ export class BaseComponent extends HTMLElement {
             Behaviors.integrate(this, behaviorConfig);
         }
     }
-
-    destroy() {
-        for (const behaviorConfig of this.#behaviors) {
-            const behavior = this[behaviorConfig.name];
-            behavior.destroy();
-        }
-    }
-
-    /**
-     * @abstract
-     */
-    childrenAvailableCallback() {}
 }
 
 customElements.define("rlg-base-component", BaseComponent);
