@@ -1,6 +1,6 @@
 import { Composer } from "../engine/behaviors/BehaviorIntegrator.js";
 import { Html } from "../engine/utils/Html.js";
-/** import { BehaviorConfig } from "../engine/behaviors/BehaviorIntegrator.js"; */
+/** @import { BehaviorConfig } from "../engine/behaviors/BehaviorIntegrator.js"; */
 
 /**
  * @abstract
