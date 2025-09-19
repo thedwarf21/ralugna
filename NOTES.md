@@ -14,6 +14,12 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 ## <span style="color:#4A2">ralugna</span>
 
 - [ ] refactor and integrate the live binding mechanics from `RS_WCL`
+    - [x] ObservableArray
+    - [x] ObservableObject
+    - [x] ObservableValue (common observability abstraction)
+    - [ ] Make obervations automatically recursive on array and JSON properties
+    - [ ] Binding
+    - [ ] Binding parsers
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
 - [ ] create some base Behaviors for the components
 
