@@ -1,1 +1,0 @@
-import { BaseComponent } from "./src/components/BaseComponent.js";
