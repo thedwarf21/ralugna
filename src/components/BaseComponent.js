@@ -71,10 +71,7 @@ export class BaseComponent extends HTMLElement {
     }
 
     destroy() {
-        for (const behaviorConfig of this.#behaviors) {
-            const behavior = this[behaviorConfig.name];
-            behavior.destroy();
-        }
+        Composer.destroyAll(this, this.#behaviors);
     }
 
     /**

@@ -20,6 +20,16 @@ class BehaviorIntegrator {
     }
 
     /**
+     * @param {Object} target 
+     * @param {BehaviorConfig[]} behaviorConfigs 
+     */
+    destroyAll(target, behaviorConfigs) {
+        for (const config of behaviorConfigs) {
+            target[config.name].destroy();
+        }
+    }
+
+    /**
      * @private
      * @param {BehaviorConfig[]} behaviorConfigs
      * @returns {BehaviorConfig[]} 
