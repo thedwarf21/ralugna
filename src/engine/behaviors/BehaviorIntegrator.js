@@ -7,10 +7,65 @@ class BehaviorIntegrator {
      * @property {typeof Behavior} class
      */
     /**
+     * @param {Object} target 
+     * @param {BehaviorConfig[]} behaviorConfigs 
+     * @returns {[integratedBehaviors: number, recievedBehaviors: number]}
+     */
+    integrateAll(target, behaviorConfigs) {
+        const validConfigs = this.#checkBehaviors(behaviorConfigs);
+        for (const config of validConfigs) {
+            this.#integrate(target, config);
+        }
+        return [validConfigs, behaviorConfigs.length];
+    }
+
+    /**
+     * @private
+     * @param {BehaviorConfig[]} behaviorConfigs
+     * @returns {BehaviorConfig[]} 
+     */
+    #checkBehaviors(behaviorConfigs) {
+        const keptConfig = [];
+        for (const item of behaviorConfigs) {
+            if (this.#checkBehaviorConfig(item, behaviorConfigs)) {
+                keptConfig.push(item);
+            }
+        }
+        return keptConfig;
+    }
+
+    /**
+     * @private
+     * @param {BehaviorConfig} config 
+     * @param {BehaviorConfig[]} configsList
+     * @returns {boolean}
+     */
+    #checkBehaviorConfig(config, configsList) {
+        const currentName = config.name;
+        const currentClass = config.class;
+        const sameNamedItems = configsList.filter(elt => elt.name === currentName);
+        const sameClassItems = configsList.filter(elt => elt.class === currentClass);
+        if (sameNamedItems.length > 1) {
+            console.warn(`The behavior named "${currentName}" appear several times in your config object => ignored.`);
+            return false;
+        }
+        if (!currentClass || !this.#isBehavior(currentClass)) {
+            console.warn(`The behavior named ${currentName} is not relied to a Behavior class => ignored.`);
+            return false;
+        }
+        if (sameClassItems.length > 1) {
+            console.warn(`The behavior class "${currentClass.constructor.name}" appear several times in your config object => ignored.`);
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * @private
      * @param {Object} target
      * @param {BehaviorConfig} behaviorConfig 
      */
-    integrate(target, behaviorConfig) {
+    #integrate(target, behaviorConfig) {
         /** @type {Behavior} */
         const behaviorInstance = new behaviorConfig.class();
         const behaviorName = behaviorConfig.name;
@@ -31,10 +86,11 @@ class BehaviorIntegrator {
     }
 
     /**
+     * @private
      * @param {any} cls
      * @returns {boolean} 
      */
-    isBehavior(cls) {
+    #isBehavior(cls) {
         return typeof cls === "function" && Behavior.prototype.isPrototypeOf(cls.prototype);
     }
 
