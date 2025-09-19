@@ -1,4 +1,5 @@
 import { Composer } from "../engine/behaviors/BehaviorIntegrator.js";
+import { Html } from "../engine/utils/Html.js";
 /** import { BehaviorConfig } from "../engine/behaviors/BehaviorIntegrator.js"; */
 
 /**
@@ -6,6 +7,24 @@ import { Composer } from "../engine/behaviors/BehaviorIntegrator.js";
  * @extends {HTMLElement}
  */
 export class BaseComponent extends HTMLElement {
+    /**
+     * @readonly
+     * @type {string}
+     */
+    static PREFFIX = "rlg-";
+    
+    /**
+     * @readonly
+     * @type {string}
+     */
+    static TAG_NAME = BaseComponent.PREFFIX + "base-component";
+
+    /**
+     * @readonly
+     * @type {string}
+     */
+    static CSS_URL = "";
+
     /**
      * @typedef SlotConfig
      * @property {string} name
@@ -27,7 +46,7 @@ export class BaseComponent extends HTMLElement {
      * @protected
      * @type {ShadowRoot} 
      */
-    shadowRoot
+    shadowRoot;
 
     constructor() {
         super();
@@ -43,7 +62,7 @@ export class BaseComponent extends HTMLElement {
     set slots(names) {
         this.#slots = [];
         for (const name of names) {
-            if (!this.#getSlot(name)) {
+            if (!this._getSlot(name)) {
                 this.#slots.push({ name: name });
             }
         }
@@ -66,8 +85,9 @@ export class BaseComponent extends HTMLElement {
     
     connecetdCallback() {
         this.shadowRoot = this.attachShadow({ mode: "open" });
-        this.#prepareSlots();
-        this.#prepareBehaviors();
+        this._appendStyles();
+        this._prepareSlots();
+        this._prepareBehaviors();
     }
 
     destroy() {
@@ -75,19 +95,30 @@ export class BaseComponent extends HTMLElement {
     }
 
     /**
-     * @private
+     * @protected
+     */
+    _appendStyles() {
+        const url = this.constructor.CSS_URL;
+        if (url) {
+            const stylesEl = Html.styles(url);
+            this.shadowRoot.appendChild(stylesEl);
+        }
+    }
+
+    /**
+     * @protected
      * @param {string} name
      * @returns {SlotConfig | undefined}
      */
-    #getSlot(name) {
+    _getSlot(name) {
         const filteredSlots = this.#slots.filter(elt => elt.name === name);
         return filteredSlots.length === 0 ? undefined : filteredSlots[0];
     }
 
     /**
-     * @private
+     * @protected
      */
-    #prepareSlots() {
+    _prepareSlots() {
         for (const slotConfig of this.#slots) {
             const slot = document.createElement("slot");
             slot.setAttribute("name", slotConfig.name);
@@ -97,9 +128,9 @@ export class BaseComponent extends HTMLElement {
     }
 
     /**
-     * @private
+     * @protected
      */
-    #prepareBehaviors() {
+    _prepareBehaviors() {
         const [integratedConfigs, totalCount] = Composer.integrateAll(this.#behaviors);
         this.#behaviors = integratedConfigs;
         console.debug(`Behaviors integration on "${this.constructor.name}": ${integratedConfigs.length} / ${totalCount} behaviors will be integrated.`);
