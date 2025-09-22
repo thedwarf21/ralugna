@@ -55,14 +55,14 @@ export class ObservableArray extends ObservableValue {
         this.#target = toObserve;
     }
 
-    get value() {
+    getValue() {
         return [...this.#target];
     }
 
     /**
      * @param {Array} array
      */
-    set value(array) {
+    setValue(array) {
         this.#target = array;
         /** @type {ObservableArrayNotification} */
         const details = { type: ObservableArray.EVENT_TYPE.set, result: array };

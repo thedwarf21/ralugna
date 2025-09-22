@@ -6,13 +6,16 @@ import { AbstractMethodError } from "../errors/AbstractMethodError.js";
  */
 export class ObservableValue {
     /**
+     * @typedef ObservableDataType = Array | Object
+     */
+    /**
      * @typedef ObserverConfig
      * @property {Object} observer
      * @property {function} callback
      */
     /**
      * @typedef ObservableNotification
-     * @property @property {Array | Object} [current]
+     * @property {ObservableDataType} [current]
      */
 
     /**
@@ -30,15 +33,16 @@ export class ObservableValue {
     /**
      * @abstract
      */
-    get value() {
-        throw new AbstractMethodError("get value");
+    getValue() {
+        throw new AbstractMethodError("getValue");
     }
 
     /**
      * @abstract
+     * @param {ObservableDataType} newValue
      */
-    set value(val) {
-        throw new AbstractMethodError("set value");
+    setValue(newValue) {
+        throw new AbstractMethodError("setValue");
     }
 
     /**
@@ -76,7 +80,7 @@ export class ObservableValue {
      * @type {ObservableNotification} details
      */
     _notify(details) {
-        details.current = this.value;
+        details.current = this.getValue();
         for (const { callback } of this.#observers) {
             callback(details);
         }
