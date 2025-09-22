@@ -16,7 +16,7 @@ export class ObservableObject extends ObservableValue {
     static EVENT_TYPE = {
         set: "set",
         delete: "delete",
-        reset: "reset"
+        init: "init"
     };
 
     /**
@@ -30,31 +30,74 @@ export class ObservableObject extends ObservableValue {
      */
     constructor(initial) {
         super();
-        if (!initial || typeof initial !== "object" || Array.isArray(initial)) {
-            throw new TypeError("ObservableObject expects a plain object as initial value.");
-        }
-        this.#target = { ...initial };
+        this.setValue({ ...initial });
+        return this.#initProxy();
     }
 
-    get value() {
+    getValue() {
         return { ...this.#target };
     }
 
     /**
      * @param {Object} newObject
      */
-    set value(newObject) {
-        this.#target = { ...newObject };
+    setValue(newObject) {
+        if (!this.#isPlainObject(newObject)) {
+            throw new TypeError("ObservableObject expects a plain object as value.");
+        }
+        for (const key in newObject) {
+            this.#defineReactiveProperty(key, newObject[key]);
+        }
         /** @type {ObservableObjectNotification} */
-        const details = { type: ObservableObject.EVENT_TYPE.reset };
+        const details = { type: ObservableObject.EVENT_TYPE.init };
         this._notify(details);
     }
 
     /**
+     * @private
+     * @param {any} obj 
+     * @returns {boolean}
+     */
+    #isPlainObject(obj) {
+        return Object.prototype.toString.call(obj) === "[object Object]"
+    }
+
+    /**
+     * @private
+     */
+    #initProxy() {
+        return new Proxy(this, {
+            set: (obj, key, value) => {
+                if (!(key in obj)) {
+                    obj.#defineReactiveProperty(key, value);
+                }
+                return true;
+            },
+            deleteProperty: (obj, key) => obj.#deleteProperty(key)
+        });
+    }
+
+    /**
+     * @private
+     * @param {string} key 
+     * @param {any} initialValue 
+     */
+    #defineReactiveProperty(key, initialValue) {
+        this.#target[key] = initialValue;
+        Object.defineProperty(this, key, {
+            configurable: true,
+            enumerable: true,
+            get: () => this.#target[key],
+            set: (value) => this.#setProperty(key, value)
+        });
+    }
+
+    /**
+     * @private
      * @param {string} key 
      * @param {any} value 
      */
-    set(key, value) {
+    #setProperty(key, value) {
         this.#target[key] = value;
         /** @type {ObservableObjectNotification} */
         const details = { type: ObservableObject.EVENT_TYPE.set, key, value };
@@ -62,11 +105,12 @@ export class ObservableObject extends ObservableValue {
     }
 
     /**
+     * @private
      * @param {string} key 
      */
-    delete(key) {
-        const existed = key in this.#target;
-        if (existed) {
+    #deleteProperty(key) {
+        if (key in this.#target) {
+            delete this[key];
             delete this.#target[key];
             /** @type {ObservableObjectNotification} */
             const details = { type: ObservableObject.EVENT_TYPE.delete, key };
