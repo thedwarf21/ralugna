@@ -1,5 +1,5 @@
 # ralugna
-A vanilla JS library (work in progress)
+A vanilla lightweight webcomponents-oriented JS library (work in progress)
 
 ## History
 
@@ -12,3 +12,29 @@ Since this time, javascript evolved a lot... so as I did.
 This is why I decided to build this library again, with a better code design, getting deeper into the concepts, and using more what JS, HTML and CSS provide nowadays.
 
 I hope you will enjoy dicovering it, as much as I did thinking and writing it.
+
+## `Composer`
+
+This importable object integrates behaviors to another object.
+
+This behaviors can be declared implementing a dedicated class inheriting from `Behavior`.
+
+Its `integrateAll` method needs to be sent a `BehaviorConfig` list :
+
+```js
+/**
+ * @typedef BehaviorConfig
+ * @property {string} name - will be used to name the property holding the behavior's object in the host object
+ * @property {typeof Behavior} class - the behavior's class
+ */
+```
+
+Don't forget to call the `destroyAll` method, when your host object gets destroyed, to prevent memory leaks.
+
+## `BaseComponent`
+
+This class is abstract. Its purpose is to encapsulate what all our web components will need : behaviors integration, slots, external CSS.
+
+The CSS can be configured for each component's class, by overriding the `CSS_URL` static constant.
+
+The behaviors can be configured for each component's class by setting a default value to the `#behavior` property.

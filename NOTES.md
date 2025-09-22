@@ -19,7 +19,6 @@ The new needs will come for "ralunga" during the "test-app" developpement.
         - [x] Replace `set (key, value)` by a proxy access through `Object.defineProperty` on the `ObservableObject`
         - [x] Check that the object given to `set value` is a plain object
     - [x] ObservableValue (common observability abstraction)
-    - [ ] Make obervations automatically recursive on array and JSON properties
     - [ ] Binding
     - [ ] Binding parsers
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
