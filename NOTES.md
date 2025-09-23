@@ -1,36 +1,23 @@
-# <span style="color:#26B">Summary</span>
+# Summary
 
 Project structure :
 
 * `/src` : contains the library itself
 * `/test-app` : contains a test project using the library. This will be a good way to challenge the library's ergonomy.
 
-# <span style="color:#26B">Roadmaps</span>
+# Currently working on
 
-What I plan to do in the future weeks.
+What I plan to do in the future days, with detailed subtasks for the in-progress tasks.
 
 The new needs will come for "ralunga" during the "test-app" developpement.
 
-## <span style="color:#4A2">ralugna</span>
+## ralugna
 
-- [ ] refactor and integrate the live binding mechanics from `RS_WCL`
-    - [x] ObservableArray
-        - [x] Ensure native `Array` mutation methods availability, and notification triggering
-        - [x] Make `myObservableArray[index]` syntax available
-    - [x] ObservableObject
-        - [x] Replace `set (key, value)` by a proxy access through `Object.defineProperty` on the `ObservableObject`
-        - [x] Check that the object given to `set value` is a plain object
-    - [x] ObservableValue (common observability abstraction)
-    - [x] ViewModel → a class that abstracts a recursive obervability through `ObservableArray` and `ObservableObject`, to make binding simple
-        - [x] recursive observation initialization
-        - [x] keep the recursive observation during mutations, observing the view model entities' mutations
-    - [x] Binding
-    - [ ] BindingParser (in progress)
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
 - [ ] create some base Behaviors for the components
 
 
-## <span style="color:#4A2">test-app</span>
+## test-app
 
 In order to test multiple use cases, I plan to create a crude HTML builder that could become more and more complex in the end.
 
@@ -53,7 +40,7 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲 **[lib]** `ObservableObject`
 - [x] 🧲 **[lib]** `ViewModel` → a class that abstracts a recursive observability through `ObservableArray` and `ObservableObject`, to make binding simple
 - [x] 🧲 **[lib]** `Binding`
-- [ ] 🧲 **[lib]** `BindingParser`
+- [x] 🧲 **[lib]** `BindingParser`
 - [x] 🧾 **[lib]** Documenting code and planed progression
 
 ## Sprint 2 (24/09 → TBD)

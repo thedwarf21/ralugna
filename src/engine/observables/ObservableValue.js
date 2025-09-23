@@ -1,6 +1,8 @@
 import { AbstractClassError } from "../errors/AbstractClassError.js";
 import { AbstractMethodError } from "../errors/AbstractMethodError.js";
 
+const IS_OBSERVABLE = Symbol("isObservable");
+
 /**
  * @abstract
  * 
@@ -32,9 +34,19 @@ export class ObservableValue {
     #observers;
 
     constructor() {
-         if (this.constructor.name === "ObservableValue") {
+        this[IS_OBSERVABLE] = true;
+        if (this.constructor.name === "ObservableValue") {
             throw new AbstractClassError("ObservableValue");
         }
+    }
+
+    /**
+     * @static
+     * @param {any} value 
+     * @returns {boolean}
+     */
+    static isObservable(value) {
+        return value?.[IS_OBSERVABLE] === true;
     }
 
     /**
