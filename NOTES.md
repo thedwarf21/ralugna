@@ -1,6 +1,4 @@
-# Summary
-
-Project structure :
+# Project structure
 
 * `/src` : contains the library itself
 * `/test-app` : contains a test project using the library. This will be a good way to challenge the library's ergonomy.
@@ -21,7 +19,7 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 
 In order to test multiple use cases, I plan to create a crude HTML builder that could become more and more complex in the end.
 
-# Summary
+# Sprints & Backlog
 
 ## Legend
 
