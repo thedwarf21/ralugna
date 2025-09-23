@@ -32,7 +32,9 @@ export class BindingParser {
         if (!parsedPath.length || parsedPath.some(part => part === "")) {
             throw new InvalidPathError(path);
         }
-        const value = parsedPath.reduce((acc, key) => acc?.[key], this.#viewModel);
+        /** @type {ObservableValue} */
+        const modelRoot = this.#viewModel.getRoot();
+        const value = parsedPath.reduce((acc, key) => acc?.[key], modelRoot);
         const isObservable = ObservableValue.isObservable(value);
         /** @type {BindingParserResult} */
         const result = { value, observable: isObservable };
