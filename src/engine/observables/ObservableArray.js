@@ -55,6 +55,7 @@ export class ObservableArray extends ObservableValue {
             throw new TypeError("ObservableArray expects an Array as initial value.");
         }
         this.#target = toObserve;
+        return this.#initProxy();
     }
 
     getValue() {
@@ -68,6 +69,41 @@ export class ObservableArray extends ObservableValue {
         this.#target = array;
         /** @type {ObservableArrayNotification} */
         const details = { type: ObservableArray.EVENT_TYPE.set, result: array, index: 0, length: array.length };
+        this._notify(details);
+    }
+
+    /**
+     * @private
+     * @returns {Proxy}
+     */
+    #initProxy() {
+        return new Proxy(this, {
+            get: (obj, prop) => {
+                if (isNaN(prop)) {
+                    return obj[prop];
+                }
+                return this.#target[prop];
+            },
+            set: (obj, prop, value) => {
+                if (isNaN(prop)) {
+                    obj[prop] = value;
+                } else {
+                    this.#setIndex(Number(prop), value);
+                }
+                return true;
+            }
+        });
+    }
+
+    /**
+     * @private
+     * @param {number} index 
+     * @param {any} value 
+     */
+    #setIndex(index, value) {
+        this.#target[index] = value;
+        /** @type {ObservableArrayNotification} */
+        const details = { type: ObservableArray.EVENT_TYPE.set, result: value, index, length: 1 };
         this._notify(details);
     }
 
