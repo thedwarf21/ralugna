@@ -24,9 +24,13 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 ## Legend
 
 🧲 chore - internal logic, tooling, or non-visible feature
-🧩 showable feature - visible behavior, usable in test-app
+
+🧩 showable feature - visible behavior, usable in test-app*
+
 🐛 bug fix
+
 🔧 refactoring
+
 🧾 documentation
 
 ## Sprint 1 (17/09 → 23/09)
