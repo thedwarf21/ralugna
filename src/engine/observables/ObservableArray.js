@@ -19,8 +19,10 @@ export class ObservableArray extends ObservableValue {
     /**
      * @typedef ObservableArrayNotification
      * @extends ObservableNotification
-     * @property {string} type
-     * @property {any} result
+     * @property {string} type - the event type
+     * @property {any} result - the native Array method's return value
+     * @property {number} [index] - the insertion index
+     * @property {number} [length] - the number of inserted items
      */
     /**
      * @readonly
@@ -65,7 +67,7 @@ export class ObservableArray extends ObservableValue {
     setValue(array) {
         this.#target = array;
         /** @type {ObservableArrayNotification} */
-        const details = { type: ObservableArray.EVENT_TYPE.set, result: array };
+        const details = { type: ObservableArray.EVENT_TYPE.set, result: array, index: 0, length: array.length };
         this._notify(details);
     }
 
@@ -78,6 +80,10 @@ export class ObservableArray extends ObservableValue {
         const result = this.#target.splice(idx, length, ...itemsToInsert);
         /** @type {ObservableArrayNotification} */
         const details = { type: ObservableArray.EVENT_TYPE.splice, result };
+        if (itemsToInsert?.length) {
+            details.index = idx;
+            details.length = itemsToInsert.length;
+        }
         this._notify(details);
     }
 
@@ -85,9 +91,10 @@ export class ObservableArray extends ObservableValue {
      * @param {any} item 
      */
     push(item) {
+        const index = this.#target.length;
         const result = this.#target.push(item);
         /** @type {ObservableArrayNotification} */
-        const details = { type: ObservableArray.EVENT_TYPE.push, result };
+        const details = { type: ObservableArray.EVENT_TYPE.push, result, index, length: 1 };
         this._notify(details);
     }
 
@@ -97,7 +104,7 @@ export class ObservableArray extends ObservableValue {
     unshift(item) {
         const result = this.#target.unshift(item);
         /** @type {ObservableArrayNotification} */
-        const details = { type: ObservableArray.EVENT_TYPE.unshift, result };
+        const details = { type: ObservableArray.EVENT_TYPE.unshift, result, index: 0, length: 1 };
         this._notify(details);
     }
 

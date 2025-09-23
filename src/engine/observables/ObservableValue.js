@@ -15,6 +15,7 @@ export class ObservableValue {
      */
     /**
      * @typedef ObservableNotification
+     * @property {ObservableValue} [sender]
      * @property {ObservableDataType} [current]
      */
 
@@ -81,6 +82,7 @@ export class ObservableValue {
      */
     _notify(details) {
         details.current = this.getValue();
+        details.sender = this;
         for (const { callback } of this.#observers) {
             callback(details);
         }

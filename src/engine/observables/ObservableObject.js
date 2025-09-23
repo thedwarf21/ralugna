@@ -42,7 +42,7 @@ export class ObservableObject extends ObservableValue {
      * @param {Object} newObject
      */
     setValue(newObject) {
-        if (!this.#isPlainObject(newObject)) {
+        if (!ObservableObject.isPlainObject(newObject)) {
             throw new TypeError("ObservableObject expects a plain object as value.");
         }
         for (const key in newObject) {
@@ -54,12 +54,11 @@ export class ObservableObject extends ObservableValue {
     }
 
     /**
-     * @private
-     * @param {any} obj 
+     * @param {any} value
      * @returns {boolean}
      */
-    #isPlainObject(obj) {
-        return Object.prototype.toString.call(obj) === "[object Object]"
+    static isPlainObject(value) {
+        return Object.prototype.toString.call(value) === "[object Object]"
     }
 
     /**
