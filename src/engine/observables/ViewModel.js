@@ -11,16 +11,13 @@ import { ObservableArray } from "./ObservableArray.js";
  */
 export class ViewModel {
     /**
-     * @private
-     * @type {ObservableDataType}
-     */
-    #root;
-
-    /**
      * @param {ObservableDataType} source 
      */
     constructor(source) {
-        this.#root = this.#convertToObservable(source);
+        if (source === null || typeof source !== "object") {
+            throw new TypeError("ViewModel constructor expects an object or array.");
+        }
+        return this.#convertToObservable(source);
     }
 
     #convertToObservable(value) {
