@@ -134,14 +134,38 @@ vm.todos.push({ title: "Read a book", priority: 5 }); // the item becomes an Obs
 vm.name = "Bob"; // this value will stay as-is
 ```
 
+---
+
+## `Binding`
+
+The `Binding` class is responsible for **linking properties from an `ObservableObject` to DOM elements**, enabling **automatic synchronization** in both directions when needed.
+
+It listens to changes in the observed model and updates the DOM accordingly. It can also update the model when the user interacts with the DOM, via DOM events.
+
+### Example
+
+```js
+const vm = new ViewModel({ formData: { user: "", password: "" }});
+const credentialsBinding = new Binding(vm.formData)
+    .bind("user", userInput, "value", "change")
+    .bind("password", passwordInput, "value", "change");
+```
+
+A DOM element's attribute can also be unbound
+
+```js
+credentialsBinding.unbind(userInput, "value");
+```
+
 ## Summary
 
-| Class              | Purpose                                        |
-| ------------------ | ---------------------------------------------- |
-| `ObservableValue`  | Abstract class for observers and notifications |
-| `ObservableArray`  | Observes mutations on arrays                   |
-| `ObservableObject` | Observes mutations on plain objects            |
-| `ViewModel`        | Makes a full data structure observable         |
+| Class              | Purpose                                                |
+| ------------------ | ------------------------------------------------------ |
+| `ObservableValue`  | Abstract class for observers and notifications         |
+| `ObservableArray`  | Observes mutations on arrays                           |
+| `ObservableObject` | Observes mutations on plain objects                    |
+| `ViewModel`        | Makes a full data structure observable                 |
+| `Binding`          | Link an `ObservableObject` to DOM elements' attributes |
 
 # Web components
 
@@ -170,3 +194,7 @@ This class is abstract. Its purpose is to encapsulate what all our web component
 The CSS can be configured for each component's class, by overriding the `CSS_URL` static constant.
 
 The behaviors can be configured for each component's class by setting a default value to the `#behavior` property.
+
+# Roadmap
+
+➡️ **Project roadmap and progress:** [See NOTES.md](./NOTES.md)
