@@ -1,9 +1,14 @@
-import { ObservableObject } from "./observables/ObservableObject.js";
-import { ObservableArray } from "./observables/ObservableArray.js";
-/** @import {ObservableDataType} from "./observables/ObservableValue.js"; */
-/** @import {ObservableObjectNotification} from "./observables/ObservableObject.js"; */
-/** @import {ObservableArrayNotification} from "./observables/ObservableArray.js"; */
+import { ObservableObject } from "./ObservableObject.js";
+import { ObservableArray } from "./ObservableArray.js";
+/** @import {ObservableDataType} from "./ObservableValue.js"; */
+/** @import {ObservableObjectNotification} from "./ObservableObject.js"; */
+/** @import {ObservableArrayNotification} from "./ObservableArray.js"; */
 
+/**
+ * This class provides and deals with keeping a recursive observabilty of an data structure.
+ * 
+ * It uses `ObervableObject` and `ObservableArray` to ensure that all the sub-references are Binding-friendly. 
+ */
 export class ViewModel {
     /**
      * @private
