@@ -15,15 +15,16 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 
 - [ ] refactor and integrate the live binding mechanics from `RS_WCL`
     - [x] ObservableArray
+        - [x] Ensure native `Array` mutation methods availability, and notification triggering
+        - [x] Make `myObservableArray[index]` syntax available
     - [x] ObservableObject
         - [x] Replace `set (key, value)` by a proxy access through `Object.defineProperty` on the `ObservableObject`
         - [x] Check that the object given to `set value` is a plain object
     - [x] ObservableValue (common observability abstraction)
-    - [ ] ViewModel -> a class that abstracts a recursive obervability through `ObservableArray` and `ObservableObject`, to make binding simple (in progress)
+    - [x] ViewModel -> a class that abstracts a recursive obervability through `ObservableArray` and `ObservableObject`, to make binding simple
         - [x] recursive observation initialization
-        - [ ] keep the recursive observation during mutations, observing the view model entities' mutations
-    - [ ] Binding
-    - [ ] Binding parsers
+        - [x] keep the recursive observation during mutations, observing the view model entities' mutations
+    - [ ] Binding (in progress)
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
 - [ ] create some base Behaviors for the components
 

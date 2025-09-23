@@ -63,6 +63,7 @@ export class ObservableObject extends ObservableValue {
 
     /**
      * @private
+     * @returns {Proxy}
      */
     #initProxy() {
         return new Proxy(this, {

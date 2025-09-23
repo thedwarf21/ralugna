@@ -3,6 +3,12 @@ import { AbstractMethodError } from "../errors/AbstractMethodError.js";
 
 /**
  * @abstract
+ * 
+ * This class and its subclasses are usable in a non-recursive obervation context.
+ * 
+ * For a recursive usage, use `ViewModel`.
+ * 
+ * Inherited by : `ObervableArray`, `ObservableObject`
  */
 export class ObservableValue {
     /**
