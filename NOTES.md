@@ -3,6 +3,8 @@
 * `/src` : contains the library itself
 * `/test-app` : contains a test project using the library. This will be a good way to challenge the library's ergonomy.
 
+---
+
 # Currently working on
 
 What I plan to do in the future days, with detailed subtasks for the in-progress tasks.
@@ -14,10 +16,11 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
 - [ ] create some base Behaviors for the components
 
-
 ## test-app
 
 In order to test multiple use cases, I plan to create a crude HTML builder that could become more and more complex in the end.
+
+---
 
 # Sprints & Backlog
 
@@ -33,6 +36,8 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 
 🧾 documentation
 
+---
+
 ## Sprint 1 (17/09 → 23/09)
 
 - [x] 🧲 **[lib]** Integrate a small objects composition engine
@@ -45,11 +50,15 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲 **[lib]** `BindingParser`
 - [x] 🧾 **[lib]** Documenting code and planed progression
 
+---
+
 ## Sprint 2 (24/09 → TBD)
 
 - [ ] 🧲 **[lib]** refactor and integrate the `RS_WCL` components that could come handy (the if and for, in helper.js should)
 - [ ] 🧩 **[test-app]** create a static default page using an HTML template demonstrating ralugna's binding mechanics
 - [ ] 🧲 **[lib]** create a Canvas component, to use it as a display container
+
+---
 
 ## Sprint 3 (TBD)
 
@@ -57,6 +66,8 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [ ] 🧩 **[test-app]** rebuild the main page to include the components gallery and an edition canvas
 - [ ] 🧲 **[lib]** create a drag and drop controller
 - [ ] 🧩 **[test-app]** use the drag and drop controller to append a component to the canvas by dragging it from the components gallery
+
+---
 
 ## Backlog
 
