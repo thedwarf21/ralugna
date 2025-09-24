@@ -17,7 +17,7 @@ export class BaseComponent extends HTMLElement {
      * @readonly
      * @type {string}
      */
-    static TAG_NAME = BaseComponent.PREFFIX + "base-component";
+    static TAG_NAME = this._getFullTagName("base-component");
 
     /**
      * @readonly
@@ -26,27 +26,16 @@ export class BaseComponent extends HTMLElement {
     static CSS_URL = "";
 
     /**
-     * @typedef SlotConfig
-     * @property {string} name
-     * @property {HTMLSlotElement} [element]
-     */
-    /**
-     * @private
-     * @type {SlotConfig[]}
-     */
-    #slots = [];
-
-    /**
-     * @private
+     * @protected
      * @type {BehaviorConfig[]}
      */
-    #behaviors = [];
+    _behaviors = [];
 
     /**
      * @protected
      * @type {ShadowRoot} 
      */
-    shadowRoot;
+    _shadowRoot;
 
     constructor() {
         super();
@@ -57,41 +46,42 @@ export class BaseComponent extends HTMLElement {
 
     /**
      * @protected
-     * @param {string[]} names 
-     */
-    set slots(names) {
-        this.#slots = [];
-        for (const name of names) {
-            if (!this._getSlot(name)) {
-                this.#slots.push({ name: name });
-            }
-        }
-    }
-
-    /**
-     * @protected
      * @param {BehaviorConfig[]} config
      */
     set behaviors(config) {
-        this.#behaviors = config;
+        this._behaviors = config;
     }
 
     /**
      * @returns {string[]}
      */
     get behaviors() {
-        return this.#behaviors.map(config => config.name);
+        return this._behaviors.map(config => config.name);
+    }
+
+    /**
+     * @returns {ShadowRoot}
+     */
+    get internalDom() {
+        return this._shadowRoot;
     }
     
     connecetdCallback() {
-        this.shadowRoot = this.attachShadow({ mode: "open" });
+        this._shadowRoot = this.attachShadow({ mode: "open" });
         this._appendStyles();
-        this._prepareSlots();
         this._prepareBehaviors();
     }
 
     destroy() {
-        Composer.destroyAll(this, this.#behaviors);
+        Composer.destroyAll(this, this._behaviors);
+    }
+
+    /**
+     * @param {string} name 
+     * @returns {string}
+     */
+    _getFullTagName(name) {
+        return BaseComponent.PREFFIX + name;
     }
 
     /**
@@ -101,29 +91,7 @@ export class BaseComponent extends HTMLElement {
         const url = this.constructor.CSS_URL;
         if (url) {
             const stylesEl = Html.styles(url);
-            this.shadowRoot.appendChild(stylesEl);
-        }
-    }
-
-    /**
-     * @protected
-     * @param {string} name
-     * @returns {SlotConfig | undefined}
-     */
-    _getSlot(name) {
-        const filteredSlots = this.#slots.filter(elt => elt.name === name);
-        return filteredSlots.length === 0 ? undefined : filteredSlots[0];
-    }
-
-    /**
-     * @protected
-     */
-    _prepareSlots() {
-        for (const slotConfig of this.#slots) {
-            const slot = document.createElement("slot");
-            slot.setAttribute("name", slotConfig.name);
-            slotConfig.element = slot;
-            root.appendChild(slot);
+            this._shadowRoot.appendChild(stylesEl);
         }
     }
 
@@ -131,10 +99,10 @@ export class BaseComponent extends HTMLElement {
      * @protected
      */
     _prepareBehaviors() {
-        const [integratedConfigs, totalCount] = Composer.integrateAll(this.#behaviors);
-        this.#behaviors = integratedConfigs;
+        const [integratedConfigs, totalCount] = Composer.integrateAll(this._behaviors);
+        this._behaviors = integratedConfigs;
         console.debug(`Behaviors integration on "${this.constructor.name}": ${integratedConfigs.length} / ${totalCount} behaviors will be integrated.`);
     }
 }
 
-customElements.define("rlg-base-component", BaseComponent);
+customElements.define(BaseComponent.TAG_NAME, BaseComponent);

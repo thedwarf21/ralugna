@@ -14,7 +14,8 @@ class BehaviorIntegrator {
     integrateAll(target, behaviorConfigs) {
         const validConfigs = this.#checkBehaviors(behaviorConfigs);
         for (const config of validConfigs) {
-            this.#integrate(target, config);
+           const behaviorInstance = this.#integrate(target, config);
+           behaviorInstance.onAttach(target.internalDom);
         }
         return [validConfigs, behaviorConfigs.length];
     }
@@ -26,6 +27,7 @@ class BehaviorIntegrator {
     destroyAll(target, behaviorConfigs) {
         for (const config of behaviorConfigs) {
             target[config.name].destroy();
+            delete target[config.name];
         }
     }
 
@@ -74,6 +76,7 @@ class BehaviorIntegrator {
      * @private
      * @param {Object} target
      * @param {BehaviorConfig} behaviorConfig 
+     * @returns {Behavior}
      */
     #integrate(target, behaviorConfig) {
         /** @type {Behavior} */
@@ -93,6 +96,7 @@ class BehaviorIntegrator {
             }
             this.#bindBehaviorMember(target, behaviorInstance, key);
         }
+        return behaviorInstance;
     }
 
     /**
