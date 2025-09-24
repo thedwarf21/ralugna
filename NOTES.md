@@ -15,8 +15,10 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
     - [ ] integrate `<rlg-for each="internalName of/in path[2].the.property[2].bind"></rlg-for>` **[SP: 3]**
-        - [ ] use a slot for repeated content (display: none on the slot + cloneNode to generate the shadow DOM content dynamicaly)
-        - [ ] must test the `each` attribute's consistence 
+        - [x] use a slot for repeated content (display: none on the slot + cloneNode to generate the shadow DOM content dynamicaly)
+        - [x] must test the `each` attribute's consistence
+        - [ ] create a RlgForItem component to dealing with a single iteration rendering (in progress)
+        - [ ] use `ObservableValue.observe` to update the RlgFor's contents dynamicaly 
         - [ ] nested `<rlg-for>` must be able to reference the parent `<rlg-for>` internal name from the `each` expression
     - [ ] integrate `<rlg-if condition="booleanExpression"></rlg-if>` **[SP: 1]**
 - [ ] create some base Behaviors for the components
@@ -60,6 +62,7 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 ## Sprint 2 (24/09 → TBD)
 
 - [x] 🔧 **[lib]** isolated the slots support as an optional behavior **[SP: 1]**
+- [x] 🧲 **[lib]** create a context provider for the scope controllers to share their context with the DOM they control **[SP: 1]**
 - [ ] 🧲 **[lib]** refactor and integrate the `RS_WCL` components that could come handy (the if and for, in helper.js should) **[SP: 4]**
 - [ ] 🧩 **[test-app]** create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
 - [ ] 🧲 **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**

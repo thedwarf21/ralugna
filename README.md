@@ -71,7 +71,9 @@ export class MyFancyComponent extends BaseComponent {
     }
 
     connectedCallback() {
+        super.connectedCallback();
         // here, you can reach the ShadowRoot with `this.internalDom` or `this._shadowRoot`
+        // keep in mind this callback is called each time your component is attached to the DOM
     }
 }
 
