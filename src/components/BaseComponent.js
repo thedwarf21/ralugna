@@ -1,4 +1,4 @@
-import { Composer } from "../engine/behaviors/BehaviorIntegrator.js";
+import { BehaviorIntegrator } from "../engine/behaviors/BehaviorIntegrator.js";
 import { Html } from "../engine/utils/Html.js";
 /** @import { BehaviorConfig } from "../engine/behaviors/BehaviorIntegrator.js"; */
 
@@ -37,6 +37,12 @@ export class BaseComponent extends HTMLElement {
      */
     _shadowRoot;
 
+    /**
+     * @private
+     * @type {BehaviorIntegrator}
+     */
+    #behaviorIntegrator;
+
     constructor() {
         super();
         if (this.constructor.name === "BaseComponent") {
@@ -66,14 +72,21 @@ export class BaseComponent extends HTMLElement {
         return this._shadowRoot;
     }
     
-    connecetdCallback() {
+    connectedCallback() {
         this._shadowRoot = this.attachShadow({ mode: "open" });
         this._appendStyles();
         this._prepareBehaviors();
+        this._configureBehaviors();
+        this.#behaviorIntegrator.attachBehaviors(this._shadowRoot);
     }
 
+    /**
+     * @protected
+     */
+    _configureBehaviors() {}
+
     destroy() {
-        Composer.destroyAll(this, this._behaviors);
+        this.#behaviorIntegrator.destroyAll(this, this._behaviors);
     }
 
     /**
@@ -99,10 +112,18 @@ export class BaseComponent extends HTMLElement {
      * @protected
      */
     _prepareBehaviors() {
-        const [integratedConfigs, totalCount] = Composer.integrateAll(this._behaviors);
+        this.#behaviorIntegrator = new BehaviorIntegrator();
+        const [integratedConfigs, totalCount] = this.#behaviorIntegrator.integrateAll(this, this._behaviors);
         this._behaviors = integratedConfigs;
         console.debug(`Behaviors integration on "${this.constructor.name}": ${integratedConfigs.length} / ${totalCount} behaviors will be integrated.`);
     }
+
+    /**
+     * @param {typeof BaseComponent} component 
+     */
+    static registerComponent(component) {
+        customElements.define(component.TAG_NAME, component);
+    }
 }
 
-customElements.define(BaseComponent.TAG_NAME, BaseComponent);
+BaseComponent.registerComponent(BaseComponent);

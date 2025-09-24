@@ -59,6 +59,7 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 
 ## Sprint 2 (24/09 → TBD)
 
+- [x] 🔧 **[lib]** isolated the slots support as an optional behavior **[SP: 1]**
 - [ ] 🧲 **[lib]** refactor and integrate the `RS_WCL` components that could come handy (the if and for, in helper.js should) **[SP: 4]**
 - [ ] 🧩 **[test-app]** create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
 - [ ] 🧲 **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**

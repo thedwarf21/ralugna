@@ -1,23 +1,39 @@
 import { Behavior } from "./Behavior.js";
 
-class BehaviorIntegrator {
+export class BehaviorIntegrator {
     /**
      * @typedef BehaviorConfig
      * @property {string} name
      * @property {typeof Behavior} class
+     * @property {Behavior} instance
      */
+    /**
+     * @private
+     * @type {BehaviorConfig[]}
+     */
+    #behaviorConfigs = [];
+
     /**
      * @param {Object} target 
      * @param {BehaviorConfig[]} behaviorConfigs 
-     * @returns {[integratedBehaviors: number, recievedBehaviors: number]}
+     * @returns {[BehaviorConfig[], number]}
      */
     integrateAll(target, behaviorConfigs) {
         const validConfigs = this.#checkBehaviors(behaviorConfigs);
+        this.#behaviorConfigs = validConfigs;
         for (const config of validConfigs) {
-           const behaviorInstance = this.#integrate(target, config);
-           behaviorInstance.onAttach(target.internalDom);
+           config.instance = this.#integrate(target, config);
         }
         return [validConfigs, behaviorConfigs.length];
+    }
+
+    /**
+     * @param {ShadowRoot} root 
+     */
+    attachBehaviors(root) {
+        for (const config of this.#behaviorConfigs) {
+            config.instance.onAttach(root);
+        }
     }
 
     /**
@@ -126,5 +142,3 @@ class BehaviorIntegrator {
         }
     }
 }
-
-export const Composer = new BehaviorIntegrator();
