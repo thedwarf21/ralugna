@@ -61,7 +61,7 @@ import { BaseComponent } from "../BaseComponent.js";
 
 export class MyFancyComponent extends BaseComponent {
 
-    static TAG_NAME = this._getFullTagName("fancy-stuff");
+    static TAG_NAME = this._getFullTagName("fancy-stuff"); // this is neaded for the tag registration (see below)
 
     static CSS_URL = "some/css/styles.css"; // this is optional, but you may want to configure an external CSS stylesheets
 
@@ -74,12 +74,8 @@ export class MyFancyComponent extends BaseComponent {
         // here, you can reach the ShadowRoot with `this.internalDom` or `this._shadowRoot`
     }
 }
-```
 
-A component class has to be registered to be usable as a DOM element. So don't forget to put this line after your class delaration.
-
-```js
-BaseComponent.registerComponent(MyFancyComponent);
+BaseComponent.registerComponent(MyFancyComponent); // a component class has to be registered to become a usable HTML element
 ```
 
 ### Behaviors & composition
