@@ -48,13 +48,118 @@ credentialsBinding.unbind(userInput, "value");
 
 # Web components
 
-## `BaseComponent`
+## Build a custom component
 
-This class is abstract. Its purpose is to encapsulate what all our web components will need : behaviors integration, slots, external CSS.
+To build a new custom component, you should need to import the `BaseComponent` abstract class. 
 
-The CSS can be configured for each component's class, by overriding the `CSS_URL` static constant.
+Its purpose is to wrap what all our web components will need : behaviors integration, external CSS, and so on...
 
-The behaviors can be configured for each component's class by setting a default value to the `#behavior` property.
+To create and use your component, you just have to configure it through the class delaration
+
+```js
+import { BaseComponent } from "../BaseComponent.js";
+
+export class MyFancyComponent extends BaseComponent {
+
+    static TAG_NAME = this._getFullTagName("fancy-stuff");
+
+    static CSS_URL = "some/css/styles.css"; // this is optional, but you may want to configure an external CSS stylesheets
+
+    constructor() {
+        super();
+        // whatever you want to do
+    }
+
+    connectedCallback() {
+        // here, you can reach the ShadowRoot with `this.internalDom` or `this._shadowRoot`
+    }
+}
+```
+
+A component class has to be registered to be usable as a DOM element. So don't forget to put this line after your class delaration.
+
+```js
+BaseComponent.registerComponent(MyFancyComponent);
+```
+
+### Behaviors & composition
+
+A behavior is a class inheriting from `Behavior` and declaring a reusable behavior and the needed properties to do so.
+
+Example:
+
+```js
+import { Behavior } from "../../engine/behaviors/Behavior.js";
+
+export class SlotsSupport extends Behavior {
+    /**
+     * @typedef SlotConfig
+     * @property {string} name
+     * @property {HTMLSlotElement} [element]
+     */
+    /**
+     * @protected
+     * @type {SlotConfig[]}
+     */
+    _slots = [];
+    
+    /**
+     * @protected
+     * @param {string} name
+     * @returns {SlotConfig | undefined}
+     */
+    _getSlot(name) {
+        const filteredSlots = this._slots.filter(elt => elt.name === name);
+        return filteredSlots.length === 0 ? undefined : filteredSlots[0];
+    }
+
+    /**
+     * @protected
+     * @param {string[]} names 
+     */
+    _setSlots(names) {
+        if (this._slots.length > 0) {
+            throw new Error("SlotSupport: slots can only be configured once.");
+        }
+        for (const name of names) {
+            this._slots.push({ name });
+        }
+    }
+
+    /**
+     * @override
+     * @param {ShadowRoot} root
+     */
+    onAttach(root) {
+        for (const slotConfig of this._slot) {
+            const slotEl = document.createElement("slot");
+            slotEl.setAttribute("name", slotConfig.name);
+            root.appendChild(slotEl);
+            slotConfig.element = slotEl;
+        }
+    }
+}
+```
+
+---
+
+Behaviors can be configured for each component's class by setting the `_behavior` property with a `BehaviorConfigs` list, and implementing the `_configureBehaviors()` configuration hook.
+
+Example:
+
+```js
+constructor() {
+    super();
+    this._behaviors = [{ class: SlotsSupport, name: "$slots" }]; // this will integrate the behavior to the component
+}
+
+/**
+ * @override
+ */
+_configureBehaviors() {
+    this._setSlots(mySlotsNamesList);  // this will configure the `SlotsSupport` behavior through a method it provides, before its onAttach method gets triggered
+}
+```
 
 # Roadmap
 
