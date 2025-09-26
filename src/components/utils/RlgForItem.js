@@ -25,6 +25,12 @@ export class RlgForItem extends BaseComponent {
      * @private
      * @type {string}
      */
+    #indexAttrName;
+
+    /**
+     * @private
+     * @type {string}
+     */
     #varName;
 
     /**
@@ -32,6 +38,12 @@ export class RlgForItem extends BaseComponent {
      * @type {string}
      */
     #varPath;
+
+    /**
+     * @private
+     * @type {string | number}
+     */
+    #index;
 
     /**
      * @private
@@ -45,8 +57,10 @@ export class RlgForItem extends BaseComponent {
     set config(config) {
         this.#patternNode = config.patternNode;
         this.#parentTagName = config.parentTagName.toLowerCase();
+        this.#indexAttrName = config.indexAttrName;
         this.#varName = config.varName;
         this.#varPath = config.varPath;
+        this.#index = config.index;
         this.#value = config.value;
     }
 
@@ -62,6 +76,7 @@ export class RlgForItem extends BaseComponent {
             text : { [this.#varName]: this.#value }
         };
         const clone = this.#patternNode.cloneNode(true);
+        clone.setAttribute(this.#indexAttrName, this.#index);
         this.#interpolateNode(clone, context);
         this.innerHTML = '';
         this.appendChild(clone);

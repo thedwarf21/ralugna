@@ -8,7 +8,9 @@
  * @typedef {Object} RlgForItemConfig
  * @property {HTMLElement} patternNode
  * @property {string} parentTagName
+ * @property {string} indexAttrName
  * @property {string} varName
  * @property {string} varPath
+ * @property {string | number} index
  * @property {any} value
  */
