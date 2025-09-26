@@ -1,5 +1,5 @@
-import { ObservableValue } from "./ObservableValue";
-/** @import { ObservableNotification } from "./ObservableValue"; */
+import { ObservableValue } from "./ObservableValue.js";
+/** @import { ObservableNotification } from "./ObservableValue.js"; */
 
 export class ObservableObject extends ObservableValue {
     /**

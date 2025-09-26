@@ -1,5 +1,5 @@
-import { ObservableValue } from "./ObservableValue";
-/** @import { ObservableNotification } from "./ObservableValue"; */
+import { ObservableValue } from "./ObservableValue.js";
+/** @import { ObservableNotification } from "./ObservableValue.js"; */
 
 /**
  * ObservableArray wraps a native array and allows observers to be notified whenever it is mutated.
@@ -29,6 +29,7 @@ export class ObservableArray extends ObservableValue {
      * @type {Record<string, string>}
      */
     static EVENT_TYPE = {
+        init: "init",
         set: "set",
         push: "push",
         pop: "pop",
@@ -68,7 +69,7 @@ export class ObservableArray extends ObservableValue {
     setValue(array) {
         this.#target = array;
         /** @type {ObservableArrayNotification} */
-        const details = { type: ObservableArray.EVENT_TYPE.set, result: array, index: 0, length: array.length };
+        const details = { type: ObservableArray.EVENT_TYPE.init, result: array, index: 0, length: array.length };
         this._notify(details);
     }
 
