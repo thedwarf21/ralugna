@@ -17,9 +17,9 @@ The new needs will come for "ralunga" during the "test-app" developpement.
     - [ ] integrate `<rlg-for each="internalName of/in path[2].the.property[2].bind"></rlg-for>` **[SP: 3]**
         - [x] use a slot for repeated content (display: none on the slot + cloneNode to generate the shadow DOM content dynamicaly)
         - [x] must test the `each` attribute's consistence
-        - [ ] create a RlgForItem component to dealing with a single iteration rendering (in progress)
-        - [ ] use `ObservableValue.observe` to update the RlgFor's contents dynamicaly 
-        - [ ] nested `<rlg-for>` must be able to reference the parent `<rlg-for>` internal name from the `each` expression
+        - [x] create a RlgForItem component to dealing with a single iteration rendering (nested rlg-for support included)
+        - [x] create a RlgForLooper to delegate the loop control responsibility (more SRP-friendly)
+        - [ ] use `ObservableValue.observe` to update the RlgFor's contents dynamicaly (delegate to a new class)
     - [ ] integrate `<rlg-if condition="booleanExpression"></rlg-if>` **[SP: 1]**
 - [ ] create some base Behaviors for the components
 

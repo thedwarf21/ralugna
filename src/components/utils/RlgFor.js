@@ -3,7 +3,9 @@ import { SlotsSupport } from "../behaviors/SlotsSupport.js";
 import { BindingParser } from "../../engine/binding/BindingParser.js";
 import { ContextDispatcher, SharedContexts } from "./context/ContextProvider.js";
 import { Html } from "../../engine/utils/Html.js";
-import { RlgForItem } from "./RlgForItem.js";
+import { RlgForLooper } from "./RlgForLooper.js";
+
+/** @import {LoopData, LooperData} from "./RlgFor.types.js"; */
 
 /**
  * @extends BaseComponent
@@ -25,7 +27,7 @@ export class RlgFor extends BaseComponent {
      * @readonly
      * @type {string}
      */
-    static PATTERN_SLOT_NAME = "repeatable-content";
+    static PATTERN_SLOT_NAME = "pattern";
 
     /**
      * @readonly
@@ -47,14 +49,7 @@ export class RlgFor extends BaseComponent {
      * @type {BindingParser}
      */
     #vmParser;
-    
-    /**
-     * @typedef LoopData
-     * @property {string} itemName
-     * @property {string} operator
-     * @property {string} dataPath
-     * @property {BindingParser} vmParser 
-     */
+
     /**
      * @type {LoopData}
      */
@@ -76,7 +71,6 @@ export class RlgFor extends BaseComponent {
     connectedCallback() {
         super.connectedCallback();
         this.loopData = this.#getLoopDataFromAttr();
-        this.loopData.pathTarget = this.#vmParser.getAtPath(this.loopData.dataPath);
         this.#executeLoop();
     }
 
@@ -100,7 +94,7 @@ export class RlgFor extends BaseComponent {
         }
         const eachAttrMembers = eachAttr.split(" ").filter(Boolean);
         if (!this.#isValidEachAttr(eachAttrMembers)) {
-            throw new Error(`RlgFor: invalid each expression "${each}". Should be "varName of path[2].an.array" or "varName in path[2].an.object"`);
+            throw new Error(`RlgFor: invalid each expression "${each}". Should be "varName of array" or "varName in object"`);
         }
         return eachAttrMembers;
     }
@@ -112,8 +106,8 @@ export class RlgFor extends BaseComponent {
      */
     #isValidEachAttr(expressionMembers) {
         return (
-            expressionMembers.length !== 3 &&
-            !this.#supportedOperators.includes(expressionMembers[1])
+            expressionMembers.length === 3 &&
+            this.#supportedOperators.includes(expressionMembers[1])
         );
     }
 
@@ -121,49 +115,16 @@ export class RlgFor extends BaseComponent {
      * @private
      */
     #executeLoop() {
-        switch (this.loopData.operator) {
-            case RlgFor.OPERATORS.of:
-                this.#reflectArray();
-                break;
-            case RlgFor.OPERATORS.in:
-                this.#reflectObject();
-                break;
+        /** @type {LooperData} */
+        const config = { 
+            ...this.loopData,
+            pathTarget: this.#vmParser.getAtPath(this.loopData.dataPath),
+            patternNode: this.#getPatternClone(),
+            parentTagName: RlgFor.TAG_NAME
         }
-    }
-
-    /**
-     * @private
-     */
-    #reflectArray() {
-        const data = this.loopData.pathTarget;
-        for (const i = 0; i < data.length; i++) {
-            const item = data[i];
-            const newHtmlNode = this.#getIterationNode(item);
-            this.internalDom.append(newHtmlNode);
-        }
-    }
-
-    /**
-     * @private
-     */
-    #reflectObject() {
-        for (const prop in this.loopData.pathTarget) {
-            const item = data[prop];
-            const newHtmlNode = this.#getIterationNode(item);
-            this.internalDom.append(newHtmlNode);
-        }
-    }
-
-    /**
-     * @private
-     * @param {any} value
-     * @returns {RlgForItem} 
-     */
-    #getIterationNode(value) {
-        const patternNode = this.#getPatternClone();
-        const iterationEl = new RlgForItem();
-        iterationEl.config =  { patternNode, varName: this.loopData.itemName, value };
-        return iterationEl;
+        const looper = new RlgForLooper(config);
+        const items = looper.getContentsFromLoop();
+        this.internalDom.append(...items);
     }
 
     /**
