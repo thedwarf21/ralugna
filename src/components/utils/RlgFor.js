@@ -4,7 +4,10 @@ import { BindingParser } from "../../engine/binding/BindingParser.js";
 import { ContextDispatcher, SharedContexts } from "./context/ContextProvider.js";
 import { Html } from "../../engine/utils/Html.js";
 import { RlgForLooper } from "./RlgForLooper.js";
+import { RlgForObjectObserver } from "./RlgForObjectObserver.js";
+import { RlgForArrayObserver } from "./RlgForArrayObserver.js";
 
+/** @import {BindingParserResult} from "../../engine/binding/BindingParser.js"; */
 /** @import {LoopData, LooperData} from "./RlgFor.types.js"; */
 
 /**
@@ -51,9 +54,16 @@ export class RlgFor extends BaseComponent {
     #vmParser;
 
     /**
+     * @private
      * @type {LoopData}
      */
-    loopData;
+    #loopData;
+
+    /**
+     * @private
+     * @type {RlgForArrayObserver | RlgForObjectObserver}
+     */
+    #dataObserver;
 
     constructor() {
         super();
@@ -70,8 +80,12 @@ export class RlgFor extends BaseComponent {
 
     connectedCallback() {
         super.connectedCallback();
-        this.loopData = this.#getLoopDataFromAttr();
+        this.#loopData = this.#getLoopDataFromAttr();
         this.#executeLoop();
+    }
+
+    disconnectedCallback() {
+        this.#dataObserver = null;
     }
 
     /**
@@ -94,7 +108,7 @@ export class RlgFor extends BaseComponent {
         }
         const eachAttrMembers = eachAttr.split(" ").filter(Boolean);
         if (!this.#isValidEachAttr(eachAttrMembers)) {
-            throw new Error(`RlgFor: invalid each expression "${each}". Should be "varName of array" or "varName in object"`);
+            throw new Error(`RlgFor: invalid each expression "${eachAttr}". Should be "varName of array" or "varName in object"`);
         }
         return eachAttrMembers;
     }
@@ -115,21 +129,26 @@ export class RlgFor extends BaseComponent {
      * @private
      */
     #executeLoop() {
+        /** @type {BindingParserResult} */
+        const parserResult = this.#vmParser.getAtPath(this.#loopData.dataPath);
+        if (!parserResult.observable) {
+            throw TypeError(`RlgFor: the value at path "${this.#loopData.dataPath}" is not observable`);
+        }
         /** @type {LooperData} */
         const config = { 
-            ...this.loopData,
-            pathTarget: this.#vmParser.getAtPath(this.loopData.dataPath),
+            ...this.#loopData,
+            pathTarget: parserResult.value,
             patternNode: this.#getPatternClone(),
             parentTagName: RlgFor.TAG_NAME
         }
         const looper = new RlgForLooper(config);
-        const items = looper.getContentsFromLoop();
-        this.internalDom.append(...items);
+        looper.render(this.internalDom);
+        this.#createDataObserver(looper, parserResult.value);
     }
 
     /**
      * @private
-     * @returns {HtmlDivElement}
+     * @returns {HTMLDivElement}
      */
     #getPatternClone() {
         const slot = this._getSlot(RlgFor.PATTERN_SLOT_NAME);
@@ -137,6 +156,22 @@ export class RlgFor extends BaseComponent {
         const slotClone = Html.create("div");
         slotClone.append(...slotContent.map(n => n.cloneNode(true)));
         return slotClone;
+    }
+
+    /**
+     * @private
+     * @param {RlgForLooper} looper 
+     * @param {ObservableValue} data
+     */
+    #createDataObserver(looper, data) {
+        switch (this.#loopData.operator) {
+            case RlgFor.OPERATORS.of:
+                this.#dataObserver = new RlgForArrayObserver(looper, data);
+                break;
+            case RlgFor.OPERATORS.in:
+                this.#dataObserver = new RlgForObjectObserver(looper, data);
+                break;
+        }
     }
 }
 

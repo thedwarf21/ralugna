@@ -9,7 +9,7 @@
 /**
  * @typedef LooperData
  * @extends LoopData
- * @property {BindingParserResult} pathTarget
+ * @property {ObservableValue} pathTarget
  * @property {HTMLDivElement} patternNode
  * @property {string} parentTagName
  */
