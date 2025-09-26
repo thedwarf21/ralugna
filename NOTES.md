@@ -14,14 +14,14 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 ## ralugna
 
 - [ ] refactor and integrate the `RS_WCL` components that could come handy
-    - [ ] integrate `<rlg-for each="internalName of/in path[2].the.property[2].bind"></rlg-for>` **[SP: 3]**
+    - [x] integrate `<rlg-for each="internalName of/in path[2].the.property[2].bind"></rlg-for>` **[SP: 3]**
         - [x] use a slot for repeated content (display: none on the slot + cloneNode to generate the shadow DOM content dynamicaly)
         - [x] must test the `each` attribute's consistence
         - [x] create a RlgForItem component to dealing with a single iteration rendering (nested rlg-for support included)
         - [x] create a RlgForLooper to delegate the loop control responsibility (more SRP-friendly)
-        - [ ] use `ObservableValue.observe` to update the RlgFor's contents dynamicaly (delegate to a new class)
+        - [x] use `ObservableValue.observe` to update the RlgFor's contents dynamicaly (delegate to a new class)
     - [ ] integrate `<rlg-if condition="booleanExpression"></rlg-if>` **[SP: 1]**
-- [ ] create some base Behaviors for the components
+- [ ] create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
 
 ## test-app
 
@@ -44,7 +44,7 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 🧾 documentation
 
 ---
-
+ 
 ## Sprint 1 (17/09 → 23/09)
 
 - [x] 🧲 **[lib]** Integrate a small objects composition engine **[SP: 2]**
@@ -63,9 +63,11 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 
 - [x] 🔧 **[lib]** isolated the slots support as an optional behavior **[SP: 1]**
 - [x] 🧲 **[lib]** create a context provider for the scope controllers to share their context with the DOM they control **[SP: 1]**
-- [ ] 🧲 **[lib]** refactor and integrate the `RS_WCL` components that could come handy (the if and for, in helper.js should) **[SP: 4]**
+- [x] 🧲 **[lib]** refactor and integrate the `RS_WCL`'s `<rs-repeat></rs-repeat>` **[SP: 3]**
+- [ ] 🧲 **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
 - [ ] 🧩 **[test-app]** create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
 - [ ] 🧲 **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**
+- [ ] 🧲 **[lib]** create a Dialog component, using Resizing and Moving behaviors **[SP: 3]**
 
 ---
 
