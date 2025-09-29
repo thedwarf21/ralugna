@@ -84,7 +84,7 @@ export class RlgFor extends BaseComponent {
     }
 
     disconnectedCallback() {
-        this.#dataObserver
+        this.#dataObserver.disconnect();
         this.#dataObserver = null;
     }
 

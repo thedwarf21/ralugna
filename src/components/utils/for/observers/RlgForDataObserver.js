@@ -26,7 +26,7 @@ export class RlgForDataObserver {
         this.#loopTarget.observe(this, (details) => this._observerHandler(details));
     }
 
-    diconnect() {
+    disconnect() {
         this.#loopTarget.disconnect(this);
     }
 
