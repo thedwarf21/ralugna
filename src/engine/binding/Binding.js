@@ -7,7 +7,8 @@ export class Binding {
      * @property {HTMLElement} element
      * @property {string} attr
      * @property {string} [event]
-     * @property {function} [callback]
+     * @property {function} [onModelValueChange]
+     * @property {function} [internalCallback]
      */
     /**
      * @private
@@ -34,16 +35,19 @@ export class Binding {
      * @param {HTMLElement} element
      * @param {string} [attr]
      * @param {string} [event]
+     * @param {function} [onModelValueChange]
+     * @returns {Binding}
      */
-    bind(key, element, attr = "textContent", event) {
-        element[attr] = this.#model[key];
+    bind(key, element, attr = "textContent", event, onModelValueChange) {
+        this.#applyNewValue(element, attr, this.#model[key]);
         /** @type {BoundAttribute} */
-        const newBinding = { key, element, attr, event };
+        const newBinding = { key, element, attr, event, onModelValueChange };
         this.#bound.push(newBinding);
         if (event) {
-            newBinding.callback = () => this.#attrValueChanged(newBinding);
-            element.addEventListener(event, newBinding.callback);
+            newBinding.internalCallback = () => this.#attrValueChanged(newBinding);
+            element.addEventListener(event, newBinding.internalCallback);
         }
+        return this;
     }
 
     /**
@@ -56,7 +60,7 @@ export class Binding {
             if (item.element === element && item.attr === attr) {
                 this.#bound.splice(i, 1);
                 if (item.event) {
-                    item.element.removeEventListener(item.event, item.callback);
+                    item.element.removeEventListener(item.event, item.internalCallback);
                 }
             }
         }
@@ -69,10 +73,14 @@ export class Binding {
         for (const binding of this.#bound) {
             const { key, element, attr } = binding;
             if (details.type === ObservableObject.EVENT_TYPE.set && details.key === key) {
-                element.setAttribute(attr, details.value);
+                const newValue = details.value;
+                this.#applyNewValue(element, attr, newValue);
+                this.#executeCallback(binding, newValue);
             }
             if (details.type === ObservableObject.EVENT_TYPE.init) {
-                element.setAttribute(attr, details.current[key]);
+                const newValue = details.current[key];
+                this.#applyNewValue(element, attr, newValue);
+                this.#executeCallback(binding, newValue);
             }
         }
     }
@@ -82,5 +90,30 @@ export class Binding {
      */
     #attrValueChanged(params) {
         this.#model[params.key] = params.element.getAttribute(params.attr);
+    }
+
+    /**
+     * 
+     * @param {HTMLElement} element 
+     * @param {string} attr 
+     * @param {any} newValue 
+     */
+    #applyNewValue(element, attr, newValue) {
+        if (attr in element) {
+            element[attr] = newValue;
+        } else {
+            element.setAttribute(attr, newValue);
+        }
+    }
+
+    /**
+     * @private
+     * @param {BoundAttribute} binding
+     * @param {any} newValue 
+     */
+    #executeCallback(binding, newValue) {
+        if (binding.onModelValueChange) {
+            binding.onModelValueChange(newValue);
+        }
     }
 }

@@ -61,28 +61,33 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 
 ## Sprint 2 (24/09 → TBD)
 
-- [x] 🔧 **[lib]** isolated the slots support as an optional behavior **[SP: 1]**
+- [x] 🔧 **[lib]** isolate the slots support as an optional behavior **[SP: 1]**
 - [x] 🧲 **[lib]** create a context provider for the scope controllers to share their context with the DOM they control **[SP: 1]**
-- [x] 🧲 **[lib]** refactor and integrate the `RS_WCL`'s `<rs-repeat></rs-repeat>` **[SP: 3]**
+- [x] 🧲 **[lib]** refactor and integrate the `RS_WCL`'s `<rs-repeat></rs-repeat>` **[SP: 4]**
+- [x] 🧲 **[lib]** create a behavior for the `rlg-model` attribute support **[SP: 1]**
+- [ ] 🧲 **[lib]** isolate interpolation concerns **[SP: 3]**
 - [ ] 🧲 **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
-- [ ] 🧩 **[test-app]** create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
-- [ ] 🧲 **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**
-- [ ] 🧲 **[lib]** create a Dialog component, using Resizing and Moving behaviors **[SP: 3]**
+- [ ] 🧲 **[lib]** create a `RlgBind` component **[SP: 1]**
 
 ---
 
 ## Sprint 3 (TBD)
 
+- [ ] 🧩 **[test-app]** create a static default page using an HTML template to test ralugna's binding mechanics **[SP: 2]**
+- [ ] 🧲 **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**
+- [ ] 🧲 **[lib]** create a resizable behavior **[SP: 1]**
+- [ ] 🧲 **[lib]** create a movable behavior **[SP: 1]**
+- [ ] 🧲 **[lib]** create a Dialog component, using Resizable and Movable behaviors **[SP: 2]**
 - [ ] 🧩 **[test-app]** create a components gallery page-fragment **[SP: 2]**
 - [ ] 🧩 **[test-app]** rebuild the main page to include the components gallery and an edition canvas **[SP: 1]**
-- [ ] 🧲 **[lib]** create a drag and drop controller **[SP: 1]**
-- [ ] 🧩 **[test-app]** use the drag and drop controller to append a component to the canvas by dragging it from the components gallery **[SP: 1]**
-- [ ] 🧲 **[lib]** create a selection controller **[SP: 2]**
-- [ ] 🧲 **[lib]** create a selection customizable widget component (could accept later: resizable, movable, ...) **[SP: 1]**
 
 ---
 
 ## Backlog
 
+- [ ] 🧲 **[lib]** create a drag and drop controller **[SP: 1]**
+- [ ] 🧩 **[test-app]** use the drag and drop controller to append a component to the canvas by dragging it from the components gallery **[SP: 1]**
+- [ ] 🧲 **[lib]** create a selection controller **[SP: 2]**
+- [ ] 🧲 **[lib]** create a selection customizable widget component (could accept later: resizable, movable, ...) **[SP: 1]**
 - [ ] 🧩 **[test-app]** use the selection controller and display the selection **[SP: 1]**
 - [ ] 🧲🧩 **[lib]** implement move and resize selection widgets features **[SP: 2]**

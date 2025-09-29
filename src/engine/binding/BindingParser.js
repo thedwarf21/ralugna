@@ -42,6 +42,25 @@ export class BindingParser {
     }
 
     /**
+     * @param {string} path - eg. "user.todos[2].name"
+     * @returns {[ ObservableValue, string ]} - eg. [ the ObservableObject at path "user.todos[2]", "name" ]
+     */
+    getAtPathForBinding(path) {
+        const parsedPath = this.#parsePath(path);
+        if (!parsedPath.length || parsedPath.some(part => part === "")) {
+            throw new InvalidPathError(path);
+        }
+        const propName = parsedPath.pop();
+        /** @type {ObservableValue} */
+        const modelRoot = this.#viewModel.getRoot();
+        const value = parsedPath.reduce((acc, key) => acc?.[key], modelRoot);
+        if (!ObservableValue.isObservable(value)) {
+            throw new TypeError(`BindingParser.getAtPathForBinding: the parent of the property you want to bind, should be observable "${path}"`);
+        }
+        return [ value, propName ];
+    }
+
+    /**
      * @private
      * @param {string} path 
      * @returns {string[]}

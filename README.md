@@ -1,5 +1,5 @@
 # ralugna
-A vanilla lightweight webcomponents-oriented JS library (work in progress)
+A vanilla lightweight MVVM webcomponents-oriented JS library (work in progress)
 
 ## History
 
