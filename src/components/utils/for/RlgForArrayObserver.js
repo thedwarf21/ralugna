@@ -1,7 +1,7 @@
-import { ObservableArray } from "../../engine/observables/ObservableArray.js";
+import { ObservableArray } from "../../../engine/observables/ObservableArray.js";
 import { RlgForLooper } from "./RlgForLooper.js";
 
-/** @import { ObservableArrayNotification } from "../../engine/observables/ObservableArray.js"; */
+/** @import { ObservableArrayNotification } from "../../../engine/observables/ObservableArray.js"; */
 
 export class RlgForArrayObserver {
     /**

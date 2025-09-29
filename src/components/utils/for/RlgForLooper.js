@@ -1,4 +1,4 @@
-import { ObservableValue } from "../../engine/observables/ObservableValue.js";
+import { ObservableValue } from "../../../engine/observables/ObservableValue.js";
 import { RlgForItem } from "./RlgForItem.js";
 
 /** @import {RlgForItemConfig} from "./RlgForItem.js"; */
@@ -45,7 +45,7 @@ export class RlgForLooper {
     }
 
     /**
-     * @param {HTMLElement | DocumentFragment} container
+     * @param {HTMLElement | DocumentFragment | ShadowRoot} container
      */
     render(container) {
         this.#itemsContainer = container;

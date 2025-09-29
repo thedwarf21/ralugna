@@ -1,4 +1,4 @@
-import { BaseComponent } from "../BaseComponent.js";
+import { BaseComponent } from "../../BaseComponent.js";
 
 /** @import {InterpolationContext, RlgForItemConfig} from "./RlgForItem.types.js"; */
 
@@ -106,7 +106,7 @@ export class RlgForItem extends BaseComponent {
      */
     #interpolateAttr(node, attr, context) {
         if (this.#needsPathInterpolation(node, attr)) {
-            attr.value = this.#interpolateText(attr.value, context.path);
+            attr.value = this.#interpolateText(attr.value, `{{ ${context.path} }}`);
         } else {
             attr.value = this.#interpolateText(attr.value, context.text);
         }

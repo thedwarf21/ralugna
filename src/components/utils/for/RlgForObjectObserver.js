@@ -1,6 +1,6 @@
-import { ObservableObject } from "../../engine/observables/ObservableObject.js";
+import { ObservableObject } from "../../../engine/observables/ObservableObject.js";
 import { RlgForLooper } from "./RlgForLooper.js";
-/** @import {ObservableObjectNotification} from "../../engine/observables/ObservableObject.js"; */
+/** @import {ObservableObjectNotification} from "../../../engine/observables/ObservableObject.js"; */
 
 export class RlgForObjectObserver {
     /**
