@@ -60,15 +60,16 @@ export class RlgModelSupport extends Behavior {
     onAttach(root) {
         const bindingPath = this._getBindingPath();
         const [ observable, property ] = this._vmParser.getAtPathForBinding(bindingPath);
-        const config = this._bindingConfig;
-        this._binding = new Binding(observable).bind(property, this, config.attr, config.event, config.onModelValueChange);
+        /** @type {BindingConfig} */
+        const config = { key: property, element: this, ...this._bindingConfig };
+        this._binding = new Binding(observable).bind(config);
     }
 
     /**
      * @override
      */
     onDestroy() {
-        this._binding.unbind(this, config.attr);
+        this._binding.destroy();
     }
 
     /**

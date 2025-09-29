@@ -2,7 +2,7 @@ import { ObservableObject } from "../observables/ObservableObject.js";
 
 export class Binding {
     /**
-     * @typedef BoundAttribute
+     * @typedef BindingConfig
      * @property {string} key
      * @property {HTMLElement} element
      * @property {string} attr
@@ -18,7 +18,7 @@ export class Binding {
 
     /**
      * @private
-     * @type {BoundAttribute[]}
+     * @type {BindingConfig[]}
      */
     #bound = [];
 
@@ -27,20 +27,16 @@ export class Binding {
      */
     constructor(source) {
         this.#model = source;
-        this.#model.observe((details) => this.#notifiedChanges(details));
+        this.#model.observe(this, (details) => this.#notifiedChanges(details));
     }
 
     /**
-     * @param {string} key
-     * @param {HTMLElement} element
-     * @param {string} [attr]
-     * @param {string} [event]
-     * @param {function} [onModelValueChange]
+     * @param {BindingConfig}
      * @returns {Binding}
      */
-    bind(key, element, attr = "textContent", event, onModelValueChange) {
+    bind({ key, element, attr = "textContent", event, onModelValueChange }) {
         this.#applyNewValue(element, attr, this.#model[key]);
-        /** @type {BoundAttribute} */
+        /** @type {BindingConfig} */
         const newBinding = { key, element, attr, event, onModelValueChange };
         this.#bound.push(newBinding);
         if (event) {
@@ -66,6 +62,22 @@ export class Binding {
         }
     }
 
+    destroy() {
+        this.#unbindAll();
+        this.#model.disconnect(this);
+    }
+
+    /**
+     * @private
+     */
+    #unbindAll() {
+        for (let i = this.#bound.length - 1; i >= 0; i--) {
+            const item = this.#bound[i];
+            item.element.removeEventListener(item.event, item.internalCallback);
+            this.#bound.splice(i, 1);
+        }
+    }
+
     /**
      * @param {ObservableObjectNotification} details
      */
@@ -86,7 +98,7 @@ export class Binding {
     }
 
     /**
-     * @param {BoundAttribute} params 
+     * @param {BindingConfig} params 
      */
     #attrValueChanged(params) {
         this.#model[params.key] = params.element.getAttribute(params.attr);
@@ -108,7 +120,7 @@ export class Binding {
 
     /**
      * @private
-     * @param {BoundAttribute} binding
+     * @param {BindingConfig} binding
      * @param {any} newValue 
      */
     #executeCallback(binding, newValue) {
