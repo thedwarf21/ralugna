@@ -1,14 +1,13 @@
-import { BaseComponent } from "../../BaseComponent.js";
-import { SlotsSupport } from "../../behaviors/SlotsSupport.js";
-import { BindingParser } from "../../../engine/binding/BindingParser.js";
+import { BaseComponent } from "../BaseComponent.js";
+import { SlotsSupport } from "../behaviors/SlotsSupport.js";
+import { BindingParser } from "../../engine/binding/BindingParser.js";
 import { ContextDispatcher, SharedContexts } from "./context/ContextProvider.js";
-import { Html } from "../../../engine/utils/Html.js";
-import { RlgForLooper } from "./RlgForLooper.js";
-import { RlgForObjectObserver } from "./RlgForObjectObserver.js";
-import { RlgForArrayObserver } from "./RlgForArrayObserver.js";
+import { Html } from "../../engine/utils/Html.js";
+import { RlgForLooper } from "./for/RlgForLooper.js";
+import { RlgForDataObserver, RlgForObjectObserver, RlgForArrayObserver } from "./for/observers";
 
-/** @import {BindingParserResult} from "../../../engine/binding/BindingParser.js"; */
-/** @import {LoopData, LooperData} from "./RlgFor.types.js"; */
+/** @import {BindingParserResult} from "../../engine/binding/BindingParser.js"; */
+/** @import {LoopData, LooperData} from "./for/RlgFor.types.js"; */
 
 /**
  * @extends BaseComponent
@@ -61,7 +60,7 @@ export class RlgFor extends BaseComponent {
 
     /**
      * @private
-     * @type {RlgForArrayObserver | RlgForObjectObserver}
+     * @type {RlgForDataObserver}
      */
     #dataObserver;
 
@@ -85,6 +84,7 @@ export class RlgFor extends BaseComponent {
     }
 
     disconnectedCallback() {
+        this.#dataObserver
         this.#dataObserver = null;
     }
 
