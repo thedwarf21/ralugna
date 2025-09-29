@@ -32,12 +32,30 @@ export class Interpolator {
     }
 
     /**
+     * @param {string} pattern 
+     * @returns {[ ObservableValue, string ]}
+     */
+    getBindingDataFrom(pattern) {
+        const path = this.#getPatternContent(pattern);
+        return this.#bindingParser.getAtPathForBinding(path);
+    }
+
+    /**
+     * 
+     * @param {string} pattern 
+     * @returns {string}
+     */
+    #getPatternContent(pattern) {
+        return pattern.replace(/^\{\{\s*/, "").replace(/\s*\}\}$/, "");
+    }
+
+    /**
      * @private
      * @param {string} pattern 
      * @returns {any}
      */
     #getValueFrom(pattern) {
-        const path = pattern.replace(/^\{\{\s*/, "").replace(/\s*\}\}$/, "");
+        const path = this.#getPatternContent(pattern);
         const parsingResult = this.#bindingParser.getAtPath(path);
         const value = parsingResult.value;
         if (parsingResult.observable) {

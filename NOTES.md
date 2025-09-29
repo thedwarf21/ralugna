@@ -66,7 +66,7 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲    **[lib]** refactor and integrate the `RS_WCL`'s `<rs-repeat></rs-repeat>` **[SP: 4]**
 - [x] 🧲    **[lib]** create a behavior for the `rlg-model` attribute support **[SP: 1]**
 - [x] 🧲🔧  **[lib]** create an interpolation specialized class and refactor `RlgForItem`'s interpolation logic accordingly **[SP: 2]**
-- [ ] 🧲    **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
+- [x] 🧲    **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
 - [ ] 🧲    **[lib]** create a `RlgBind` component **[SP: 1]**
 
 ---
