@@ -130,23 +130,22 @@ export class RlgForLooper {
     }
 
     /**
-     * @param {any} value
      * @param {string} dataPath 
      * @param {string | number} index
      * @returns {RlgForItem}
      */
-    getIterationNode(value, dataPath, index) {
+    getIterationNode(dataPath, index) {
         const patternNode = this.#loopData.patternNode.cloneNode(true);
         const iterationEl = new RlgForItem();
         /** @type {RlgForItemConfig} */
         iterationEl.config =  { 
             patternNode,
+            vmParser: this.#loopData.vmParser,
             parentTagName: this.#loopData.parentTagName,
             indexAttrName: RlgForLooper.INDEX_ATTR_NAME,
             varName: this.#loopData.itemName,
             varPath: dataPath,
-            index,
-            value
+            index
         };
         return iterationEl;
     }
@@ -173,9 +172,8 @@ export class RlgForLooper {
         const contentsList = [];
         const data = this.#loopData.pathTarget;
         for (let i = 0; i < data.length; i++) {
-            const item = data[i];
             const dataPath = this.getArrayItemDataPath(i);
-            const newHtmlNode = this.getIterationNode(item, dataPath, i);
+            const newHtmlNode = this.getIterationNode(dataPath, i);
             contentsList.push(newHtmlNode);
         }
         return contentsList;
@@ -189,9 +187,8 @@ export class RlgForLooper {
         const contentsList = [];
         const data = this.#loopData.pathTarget;
         for (const prop in data) {
-            const item = data[prop];
             const dataPath = this.getObjectItemDataPath(prop);
-            const newHtmlNode = this.getIterationNode(item, dataPath, prop);
+            const newHtmlNode = this.getIterationNode(dataPath, prop);
             contentsList.push(newHtmlNode);
         }
         return contentsList;
