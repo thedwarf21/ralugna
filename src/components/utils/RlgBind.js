@@ -20,6 +20,7 @@ export class RlgBind extends BaseComponent {
      * @type {string}
      */
     static TAG_NAME = this._getFullTagName("bind");
+
     /**
      * @private
      * @type {HTMLElement}
@@ -57,6 +58,7 @@ export class RlgBind extends BaseComponent {
 
     /**
      * @private
+     * @param {any} newValue
      */
     #applyModelChange(newValue) {
         if (this.#attr in this.#element) {
