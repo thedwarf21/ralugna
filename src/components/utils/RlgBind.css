@@ -1,0 +1,7 @@
+:host {
+    all: unset;
+    display: inline;
+    white-space: inherit;
+    font: inherit;
+    color: inherit;
+}

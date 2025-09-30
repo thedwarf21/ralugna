@@ -13,15 +13,8 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 
 ## ralugna
 
-- [ ] refactor and integrate the `RS_WCL` components that could come handy
-    - [x] integrate `<rlg-for each="internalName of/in path[2].the.property[2].bind"></rlg-for>` **[SP: 3]**
-        - [x] use a slot for repeated content (display: none on the slot + cloneNode to generate the shadow DOM content dynamicaly)
-        - [x] must test the `each` attribute's consistence
-        - [x] create a RlgForItem component to dealing with a single iteration rendering (nested rlg-for support included)
-        - [x] create a RlgForLooper to delegate the loop control responsibility (more SRP-friendly)
-        - [x] use `ObservableValue.observe` to update the RlgFor's contents dynamicaly (delegate to a new class)
-    - [ ] integrate `<rlg-if condition="booleanExpression"></rlg-if>` **[SP: 1]**
 - [ ] create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
+    - [ ] think further about the ContextProvider : we should be able to deal with serveral contexts, for several document fragments
 
 ## test-app
 
@@ -67,7 +60,7 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲    **[lib]** create a behavior for the `rlg-model` attribute support **[SP: 1]**
 - [x] 🧲🔧  **[lib]** create an interpolation specialized class and refactor `RlgForItem`'s interpolation logic accordingly **[SP: 2]**
 - [x] 🧲    **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
-- [ ] 🧲    **[lib]** create a `RlgBind` component **[SP: 1]**
+- [x] 🧲    **[lib]** create a `RlgBind` component **[SP: 1]**
 
 ---
 

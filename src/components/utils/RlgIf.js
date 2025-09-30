@@ -1,6 +1,8 @@
 import { BaseComponent } from "../BaseComponent.js";
+import { SlotsSupport } from "../behaviors/SlotsSupport.js";
 import { Interpolator } from "../../engine/binding/Interpolator.js";
 import { Binding } from "../../engine/binding/Binding.js";
+import { ContextDispatcher, SharedContexts } from "./context/ContextProvider.js";
 
 /**
  * @extends BaseComponent

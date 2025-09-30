@@ -40,16 +40,18 @@ export class RlgModelSupport extends Behavior {
     _binding;
 
     /**
+     * @protected
      * @param {BindingParser} vmParser 
      */
-    setVmParser(vmParser) {
+    _setVmParser(vmParser) {
         this._vmParser = vmParser;
     }
 
     /**
+     * @protected
      * @param {BindingConfig} config 
      */
-    setBindingConfig(config) {
+    _setBindingConfig(config) {
         this._bindingConfig = config;
     }
 
