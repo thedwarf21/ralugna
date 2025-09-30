@@ -13,8 +13,8 @@ The new needs will come for "ralunga" during the "test-app" developpement.
 
 ## ralugna
 
+- [ ] create an `AbstractController` class managing with the controller's context and its injection to the template's components **[SP: 3]**
 - [ ] create a static default page using an HTML template demonstrating ralugna's binding mechanics **[SP: 2]**
-    - [ ] think further about the ContextProvider : we should be able to deal with serveral contexts, for several document fragments
 
 ## test-app
 
@@ -48,11 +48,11 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲    **[lib]** `ViewModel` → a class that abstracts a recursive observability through `ObservableArray` and `ObservableObject`, to make binding simple **[SP: 2]**
 - [x] 🧲    **[lib]** `Binding` **[SP: 1]**
 - [x] 🧲    **[lib]** `BindingParser` **[SP: 1]**
-- [x] 🧾    **[lib]** Documenting code and planed progression **[SP: 1]**
+- [x] 🧾    **[doc]** Documenting code and planed progression **[SP: 1]**
 
 ---
 
-## Sprint 2 (24/09 → TBD)
+## Sprint 2 (24/09 → 30/09)
 
 - [x] 🔧    **[lib]** isolate the slots support as an optional behavior **[SP: 1]**
 - [x] 🧲    **[lib]** create a context provider for the scope controllers to share their context with the DOM they control **[SP: 1]**
@@ -61,10 +61,11 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲🔧  **[lib]** create an interpolation specialized class and refactor `RlgForItem`'s interpolation logic accordingly **[SP: 2]**
 - [x] 🧲    **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
 - [x] 🧲    **[lib]** create a `RlgBind` component **[SP: 1]**
+- [x] 🧾    **[doc]** update README.md **[SP: 1]**
 
 ---
 
-## Sprint 3 (TBD)
+## Sprint 3 (01/10 → TBD)
 
 - [ ] 🧩    **[test-app]** create a static default page using an HTML template to test ralugna's binding mechanics **[SP: 2]**
 - [ ] 🧲    **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**

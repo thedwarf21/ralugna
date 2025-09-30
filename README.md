@@ -1,21 +1,42 @@
 # ralugna
 A vanilla lightweight MVVM webcomponents-oriented JS library (work in progress)
 
-## History
+**Project in active development — Not yet production-ready**
 
-In 2020 january, I started building a web components library. It took me about 3 month to build the RS_WCL (see my other public repos).
+Core architecture is nearly complete (bindings, components, behaviors).
+Once context support is finalized, a full demo app will be built and documented.
 
-But I did quick, because I was spending more time searching how to technically make it work as I intended it to, than to think about its code design.
+If you're curious, feel free to explore — but expect breaking changes for now.
 
-Since this time, javascript evolved a lot... so as I did.
+## Documentation index
 
-This is why I decided to build this library again, with a better code design, getting deeper into the concepts, and using more what JS, HTML and CSS provide nowadays.
+- [History](#history)
+- [Binding and ViewModel](#binding-and-viewmodel)
+- [Web components](#web-components)
+    - [Available Components](#available-components)
+        - [`<rlg-if>`](#the-conditional-display)
+        - [`<rlg-bind>`](#the-unary-binding-wrapper)
+        - [`<rlg-for>`](#the-loop-component)
+    - [Custom Components](#build-a-custom-component)
+        - [Behaviors](#behaviors--composition)
+- [Roadmap](#roadmap)
 
-I hope you will enjoy dicovering it, as much as I did thinking and writing it.
+# History
+
+In 2020 january, I started building a web components library called **RS_WCL** (see my other public repos).
+It was a fast-paced technical challenge rather than a long-term project.
+
+Since then, both JavaScript and my own approach to development have evolved significantly.
+
+This is why I decided to rebuild the library from scratch — with cleaner design, deeper concepts, and a modern take on what JS, HTML and CSS have to offer.
+
+I hope you'll enjoy exploring it as much as I enjoyed crafting it.
+
+---
 
 # Binding and ViewModel
 
-Bidirectional binding implies **both DOM observation and data observation**.
+Bidirectional binding can imply **both DOM observation and data observation**.
 
 JavaScript does **not natively support observation of mutations** on arrays or plain objects.
 
@@ -23,30 +44,89 @@ The `ralugna` library provides tools to solve this limitation through its intern
 
 To ensure observability across an entire nested data structure, you can use the `ViewModel` class.
 
+The `ralugna` library provides **tools and web components abstracting all of the binding mechanics**. The only point you should keep in mind, is that you may need a `ViewModel` instance in each of your templates controllers.
+
+Example:
+
+```js
+import { ViewModel } from 'src/engine/observables/ViewModel.js';
+
+const user = new ViewModel({
+  name: 'Alice',
+  age: 23,
+  todos: [...]
+});
+```
+
 ---
 
-## `Binding`
-
-The `Binding` class is responsible for **linking properties from an `ObservableObject` to DOM elements**, enabling **automatic synchronization** in both directions when needed.
-
-It listens to changes in the observed model and updates the DOM accordingly. It can also update the model when the user interacts with the DOM, via DOM events.
-
-### Example
-
-```js
-const vm = new ViewModel({ user: "", password: "" });
-const credentialsBinding = new Binding(vm)
-    .bind("user", userInput, "value", "change")
-    .bind("password", passwordInput, "value", "change");
-```
-
-A DOM element's attribute can also be unbound.
-
-```js
-credentialsBinding.unbind(userInput, "value");
-```
-
 # Web components
+
+## Available components
+
+`ralugna` provides several base utils components, to help you in templating your pages and page fragments.
+
+### The conditional display
+
+This component provides a way to **dynamicaly show / hide some parts** of the template, depending on a **condition**.
+
+It uses a `content` slot.
+
+You can use it this way :
+
+```html
+<rlg-if test="{{ user.age }} >= 18 && {{ options.visible }}">
+    <div slot="content"><!-- your content --></div>
+</rlg-if>
+```
+
+Be careful about the syntax. You might want to write :
+
+```html
+<rlg-if test="{{ user.age >= 18 && options.visible }}"> //❌ invalid binding expression in the double brackets : it cannot be directly interpolated from the `ViewModel`
+<rlg-if test="{{ user.age }} >= 18 && {{ options.visible }}"> //✅ the binding engine will see which expressions to observe and interpolate
+```
+
+but this syntax won't work. The **double brackets** should wrap each **observed expression**, for the library to be able to identify each of them them and register their observation.
+
+The double brackets contents are dynamicaly **replaced by the actual value, before the test expression gets evaluated**. So, you could write something like :
+
+```html
+<rlg-if test="{{ user.name }}.toLowerCase().startsWith('h')">
+```
+
+---
+
+### The unary binding wrapper
+
+You probably may need to display a **dynamic content** into a paragraph, or a dynamic image, **that could be changed from your controller**.
+
+This component can create **any DOM element you need**, and bind one of its attributes / properties to a `ViewModel` property.
+
+```html
+Hello <rlg-bind tag-name="span" attr="innerText" rlg-model="user.name"></rlg-bind> !
+<!-- or -->
+<rlg-bind tag-name="img" attr="src" rlg-model="product.pictureUrl"></rlg-bind>
+<!-- or anything you would need... -->
+```
+
+---
+
+### The loop component
+
+Displaying a template for **each element of an array or each property of an object** can be very useful indeed. And it can be even more useful if the displayed items automaticaly updates when the array or the object you display, mutates.
+
+This is what provides this component. Its internal slot's name is `pattern`
+
+```html
+<rlg-for each="item of user.todos">
+    <div slot="pattern">
+        <b>{{ item.planedBeginTime }}:</b> {{ item.description }}
+    </div>
+<rlg-for>
+```
+
+---
 
 ## Build a custom component
 
@@ -79,6 +159,8 @@ export class MyFancyComponent extends BaseComponent {
 
 BaseComponent.registerComponent(MyFancyComponent); // a component class has to be registered to become a usable HTML element
 ```
+
+---
 
 ### Behaviors & composition
 
@@ -155,7 +237,7 @@ constructor() {
  * @override
  */
 _configureBehaviors() {
-    this._setSlots(mySlotsNamesList);  // this will configure the `SlotsSupport` behavior through a method it provides, before its onAttach method gets triggered
+    this._setSlots(mySlotsNamesList);  // this will configure the `SlotsSupport` behavior through a method it provides, before its `onAttach` method gets triggered
 }
 ```
 
