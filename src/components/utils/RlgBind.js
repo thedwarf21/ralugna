@@ -37,6 +37,7 @@ export class RlgBind extends BaseComponent {
         super();
         this._behaviors = [{ class: RlgModelSupport, name: "$rlgModel" }];
     }
+    
     /**
      * @override
      */

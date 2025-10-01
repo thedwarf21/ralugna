@@ -61,24 +61,25 @@ In order to test multiple use cases, I plan to create a crude HTML builder that 
 - [x] 🧲🔧  **[lib]** create an interpolation specialized class and refactor `RlgForItem`'s interpolation logic accordingly **[SP: 2]**
 - [x] 🧲    **[lib]** refactor and integrate the `RS_WCL`'s `<rs-if></rs-if>` **[SP: 1]**
 - [x] 🧲    **[lib]** create a `RlgBind` component **[SP: 1]**
-- [x] 🧾    **[doc]** update README.md **[SP: 1]**
+- [x] 🧾    **[doc]** update documentation **[SP: 1]**
 
 ---
 
 ## Sprint 3 (01/10 → TBD)
 
+- [ ] 🧲    **[lib]** create the base controller, as an abstract class implementing the common behavior (template loading, context initialization and propagation, etc...) **[SP: 3]** 
 - [ ] 🧩    **[test-app]** create a static default page using an HTML template to test ralugna's binding mechanics **[SP: 2]**
 - [ ] 🧲    **[lib]** create a Canvas component, to use it as a display container **[SP: 2]**
 - [ ] 🧲    **[lib]** create a resizable behavior **[SP: 1]**
 - [ ] 🧲    **[lib]** create a movable behavior **[SP: 1]**
-- [ ] 🧲    **[lib]** create a Dialog component, using Resizable and Movable behaviors **[SP: 2]**
-- [ ] 🧩    **[test-app]** create a components gallery page-fragment **[SP: 2]**
-- [ ] 🧩    **[test-app]** rebuild the main page to include the components gallery and an edition canvas **[SP: 1]**
 
 ---
 
 ## Backlog
 
+- [ ] 🧲    **[lib]** create a Dialog component, using Resizable and Movable behaviors **[SP: 2]**
+- [ ] 🧩    **[test-app]** create a components gallery page-fragment **[SP: 2]**
+- [ ] 🧩    **[test-app]** rebuild the main page to include the components gallery and an edition canvas **[SP: 1]**
 - [ ] 🧲    **[lib]** create a drag and drop controller **[SP: 1]**
 - [ ] 🧩    **[test-app]** use the drag and drop controller to append a component to the canvas by dragging it from the components gallery **[SP: 1]**
 - [ ] 🧲    **[lib]** create a selection controller **[SP: 2]**

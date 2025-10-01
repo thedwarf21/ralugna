@@ -58,6 +58,12 @@ const user = new ViewModel({
 });
 ```
 
+More about the lower layers:
+
+➡️ **How the ViewModel object works:** [See observables.md](./src/engine/observables/observables.md)
+
+➡️ **How the Binding features work:** [See BindingFeatures.md](./src/engine/binding/BindingFeatures.md)
+
 ---
 
 # Web components
@@ -240,6 +246,8 @@ _configureBehaviors() {
     this._setSlots(mySlotsNamesList);  // this will configure the `SlotsSupport` behavior through a method it provides, before its `onAttach` method gets triggered
 }
 ```
+
+➡️ **About the behaviors integration:** [See behaviors.md](./src/engine/behaviors/behaviors.md)
 
 # Roadmap
 

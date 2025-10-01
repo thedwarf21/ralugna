@@ -127,3 +127,5 @@ vm.name = "Bob"; // this value will stay as-is
 | `ObservableArray`  | Observes mutations on arrays                   |
 | `ObservableObject` | Observes mutations on plain objects            |
 | `ViewModel`        | Makes a full data structure observable         |
+
+[Back to README.md](../../../README.md#binding-and-viewmodel)
